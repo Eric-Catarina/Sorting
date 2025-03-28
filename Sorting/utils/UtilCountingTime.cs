@@ -14,9 +14,8 @@ namespace Sorting.utils
         public void Stop()
         {
             stopwatch.Stop();
-.
         }
-
-
     }
+
+    
 }

@@ -1,5 +1,6 @@
 ﻿using Sorting.enums;
 using Sorting.sorting.simple;
+using Sorting.sorting.specials;
 
 namespace Sorting.manager
 {
@@ -27,6 +28,7 @@ namespace Sorting.manager
                     break;
 
                 case Sortings.COUNTINGSORT:
+                    ordenado = CountingSort.Sorting(vet);
                     break;
 
                 case Sortings.RADIXSORT:
