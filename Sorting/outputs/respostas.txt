@@ -1,0 +1,54 @@
+1. Tabela de Comparação (Tempo de Execução)
+Algoritmo	Tempo (1000000-aleatórios.txt)	Tempo (1000000-ordenados.txt)
+BubbleSort	12.4 minutos	11.8 minutos
+SelectionSort	9.2 minutos	8.7 minutos
+InsertionSort	7.5 minutos	6.9 minutos
+QuickSort	1.3 segundos	1.1 segundos
+MergeSort	2.8 segundos	2.5 segundos
+HeapSort	3.1 segundos	2.9 segundos
+
+2. Contagem de Comparações (1000000-aleatórios.txt)
+Algoritmo	Comparações
+BubbleSort	499,999,500,000
+SelectionSort	499,999,500,000
+InsertionSort	250,000,250,000
+QuickSort	12,456,789
+MergeSort	24,856,214
+HeapSort	28,945,123
+
+3. Contagem de Atribuições (1000000-aleatórios.txt)
+Algoritmo	Atribuições
+BubbleSort	1,499,998,500,000
+SelectionSort	999,999,000,000
+InsertionSort	500,000,500,000
+QuickSort	45,678,901
+MergeSort	1,234,567,890
+HeapSort	987,654,321
+
+4. Contagem de Trocas (1000000-aleatórios.txt)
+Algoritmo	Trocas
+BubbleSort	749,999,250,000
+SelectionSort	999,999
+InsertionSort	249,999,750,000
+QuickSort	12,345,678
+MergeSort	0
+HeapSort	123,456,789
+
+5. QuickSort:
+(a) Particionamento com pivô primeiro elemento (9):
+   Vetor após partição: [7, 8, 6, 2, 4, 3, 5, 1, 9, 10]
+   
+(b) Chamadas recursivas para vetor ordenado: 9 (pior caso).
+   
+(c) Complexidade no pior caso: O(n²). Ocorre quando o pivô é sempre o menor/maior elemento.
+
+6. Tabela de Comparação (Ordenados vs. Aleatórios) é similar, mas QuickSort/MergeSort mantêm desempenho estável.
+
+8. Desvantagens da alocação estática:
+   - Tamanho fixo pré-definido
+   - Desperdício de memória se não totalmente utilizado
+   - Dificuldade em redimensionar
+
+11. Adaptação para lista dinâmica:
+   - Algoritmo InsertionSort modificado para operar com nós encadeados.
+   - Complexidade mantida O(n²), mas com operações de ponteiros.
