@@ -50,6 +50,17 @@
         {
             return -1; // implemente
         }
+        public int Pesquisar(int item)
+        {
+            for (int i = 0; i < cont; i++)
+            {
+                if (lista[i] == item)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
     }
 }

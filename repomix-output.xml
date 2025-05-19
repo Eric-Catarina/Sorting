@@ -58,6 +58,8 @@ Sorting/
     SolutionAllocationDynamic.cs
   basic_static_allocation_structures/
     SolutionAllocationStatic.cs
+  enemy/
+    Enemy.cs
   enums/
     Sortings.cs
   manager/
@@ -68,6 +70,8 @@ Sorting/
     PrintSolutionStatic.cs
   reader/
     ReaderFile.cs
+  search/
+    BinarySearch.cs
   sorting/
     efficient/
       HeapSort.cs
@@ -97,24 +101,95 @@ Sorting.sln
 <files>
 This section contains the contents of the repository's files.
 
+<file path="Sorting/enemy/Enemy.cs">
+// Sorting/enemy/Enemy.cs
+namespace Sorting.enemy
+{
+    public class Enemy
+    {
+        public string Name { get; set; }
+        public int Health { get; set; }
+        public int Damage { get; set; }
+        public int Level { get; set; }
+
+        public Enemy(string name, int health, int damage, int level)
+        {
+            Name = name;
+            Health = health;
+            Damage = damage;
+            Level = level;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} (Health: {Health}, Damage: {Damage}, Level: {Level})";
+        }
+    }
+}
+</file>
+
+<file path="Sorting/search/BinarySearch.cs">
+using Sorting.enemy;
+namespace Sorting.search
+{
+    class BinarySearch
+    {
+        public static bool Search(Enemy[] enemies, string property, string value)
+        {
+            int left = 0;
+            int right = enemies.Length - 1;
+
+            while (left <= right)
+            {
+                int mid = left + (right - left) / 2;
+
+                string midValue = property.ToLower() switch
+                {
+                    "name" => enemies[mid].Name,
+                    "health" => enemies[mid].Health.ToString(),
+                    "damage" => enemies[mid].Damage.ToString(),
+                    "level" => enemies[mid].Level.ToString(),
+                    _ => ""
+                };
+
+                int comparison = string.Compare(midValue, value);
+
+                if (comparison == 0)
+                    return true;
+                else if (comparison < 0)
+                    left = mid + 1;
+                else
+                    right = mid - 1;
+            }
+
+            return false;
+        }
+    }
+}
+</file>
+
 <file path="Sorting/basic_class/dynamic/Celula.cs">
+// Sorting/basic_class/dynamic/Celula.cs
 namespace Sorting.basic_class.dynamic
 {
     class Celula
     {
         public int valor;
         public Celula? prox;
+        public Celula? ant; // Adicione esta linha
 
         public Celula()
         {
             this.valor = -1;
             this.prox = null;
+            this.ant = null; // Adicione esta linha
         }
 
         public Celula(int valor)
         {
             this.valor = valor;
             this.prox = null;
+            this.ant = null; // Adicione esta linha
         }
     }
 }
@@ -162,6 +237,55 @@ namespace Sorting.basic_class.dynamic
 {
     class ListaDuplamenteEncadeada
     {
+        public Celula? primeiro;
+        public Celula? ultimo;
+        
+
+    public ListaDuplamenteEncadeada()
+    {
+        primeiro = ultimo = new Celula();
+    }
+    public bool Inserir(int item)
+    {
+        if (primeiro == null || ultimo == null) return false;
+
+        Celula nova = new Celula(item);
+        nova.prox = primeiro.prox;
+        if (primeiro.prox != null)
+            primeiro.prox.ant = nova;
+        primeiro.prox = nova;
+        nova.ant = primeiro;
+
+        if (ultimo == primeiro)
+            ultimo = nova;
+
+        return true;
+    }
+        
+        public int Remover()
+        {
+            if (primeiro == ultimo)
+                return -1;
+                
+            Celula tmp = primeiro.prox;
+            primeiro.prox = tmp.prox;
+            if (tmp.prox != null)
+                tmp.prox.ant = primeiro;
+            if (ultimo == tmp)
+                ultimo = primeiro;
+                
+            return tmp.valor;
+        }
+        
+        public bool Pesquisar(int item)
+        {
+            for (Celula i = primeiro.prox; i != null; i = i.prox)
+            {
+                if (i.valor == item)
+                    return true;
+            }
+            return false;
+        }
     }
 }
 </file>
@@ -354,6 +478,17 @@ namespace Sorting.basic_class.@static
         {
             return -1; // implemente
         }
+        public int Pesquisar(int item)
+        {
+            for (int i = 0; i < cont; i++)
+            {
+                if (lista[i] == item)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
     }
 }
@@ -515,46 +650,123 @@ namespace Sorting.sorting.efficient
 </file>
 
 <file path="Sorting/sorting/efficient/QuickSort.cs">
+using Sorting.enemy;
 namespace Sorting.sorting.efficient
 {
     class QuickSort
     {
+        public static Enemy[] Sorting(Enemy[] enemies, string sortBy)
+        {
+            return QuickSortRecursive(enemies, 0, enemies.Length - 1, sortBy);
+        }
+
+        private static Enemy[] QuickSortRecursive(Enemy[] enemies, int left, int right, string sortBy)
+        {
+            if (left < right)
+            {
+                int pivot = Partition(enemies, left, right, sortBy);
+                QuickSortRecursive(enemies, left, pivot - 1, sortBy);
+                QuickSortRecursive(enemies, pivot + 1, right, sortBy);
+            }
+            return enemies;
+        }
+
+        private static int Partition(Enemy[] enemies, int left, int right, string sortBy)
+        {
+            Enemy pivot = enemies[right];
+            int i = left - 1;
+
+            for (int j = left; j < right; j++)
+            {
+                if (CompareEnemies(enemies[j], pivot, sortBy) <= 0)
+                {
+                    i++;
+                    Swap(enemies, i, j);
+                }
+            }
+            Swap(enemies, i + 1, right);
+            return i + 1;
+        }
+
+        private static int CompareEnemies(Enemy a, Enemy b, string sortBy)
+        {
+            return sortBy.ToLower() switch
+            {
+                "name" => string.Compare(a.Name, b.Name),
+                "health" => a.Health.CompareTo(b.Health),
+                "damage" => a.Damage.CompareTo(b.Damage),
+                "level" => a.Level.CompareTo(b.Level),
+                _ => 0
+            };
+        }
+
+        private static void Swap(Enemy[] enemies, int i, int j)
+        {
+            Enemy temp = enemies[i];
+            enemies[i] = enemies[j];
+            enemies[j] = temp;
+        }
     }
 }
 </file>
 
 <file path="Sorting/sorting/efficient/ShellSort.cs">
+// Exemplo para ShellSort
 namespace Sorting.sorting.efficient
 {
     class ShellSort
     {
+        public static Enemy[] Sorting(Enemy[] enemies, string sortBy)
+        {
+            // Implementação
+            return enemies;
+        }
     }
 }
 </file>
 
 <file path="Sorting/sorting/simple/BubbleSort.cs">
+using Sorting.enemy;
 namespace Sorting.sorting.simple
 {
     class BubbleSort
     {
-        public static int[] Sorting(int[] vet)
+        public static Enemy[] Sorting(Enemy[] enemies, string sortBy)
         {
-            int n = vet.Length;
+
+            int n = enemies.Length;
 
             for (int i = 0; i < n; i++)
             {
                 for (int j = n - 1; j > i; j--)
                 {
-                    if (vet[j] < vet[j - 1])
+                    bool shouldSwap = false;
+                    switch (sortBy.ToLower())
                     {
-                        int tmp = vet[j];
-                        vet[j] = vet[j - 1];
-                        vet[j - 1] = tmp;
+                        case "name":
+                            shouldSwap = string.Compare(enemies[j].Name, enemies[j - 1].Name) < 0;
+                            break;
+                        case "health":
+                            shouldSwap = enemies[j].Health < enemies[j - 1].Health;
+                            break;
+                        case "damage":
+                            shouldSwap = enemies[j].Damage < enemies[j - 1].Damage;
+                            break;
+                        case "level":
+                            shouldSwap = enemies[j].Level < enemies[j - 1].Level;
+                            break;
+                    }
+
+                    if (shouldSwap)
+                    {
+                        Enemy tmp = enemies[j];
+                        enemies[j] = enemies[j - 1];
+                        enemies[j - 1] = tmp;
                     }
                 }
             }
 
-            return vet;
+            return enemies;
         }
     }
 }
@@ -867,15 +1079,15 @@ namespace Sorting.manager
 {
     class ManagerFileSorting
     {
-        public static void Ordenar(Sortings algoritmo, int[] vet)
+    public static void Ordenar(Sortings algoritmo, Enemy[] vet, string sortBy)
         {
             int[] ordenado;
 
             switch (algoritmo)
             {
                 case Sortings.BUBBLESORT:
-                    ordenado = BubbleSort.Sorting(vet);
-                    break;
+                BubbleSort.Sorting(vet, sortBy);
+                break;
 
                 case Sortings.SELECTIONSORT:
                     ordenado = SelectionSort.Sorting(vet);
@@ -912,74 +1124,117 @@ namespace Sorting.manager
 </file>
 
 <file path="Sorting/Program.cs">
-using Sorting.basic_class.@static;
-
+using Sorting.enemy;
+using Sorting.manager;
+using Sorting.print;
+using Sorting.reader;
+using Sorting.utils;
+using Sorting.enums;
+using Sorting.sorting.simple;
+using Sorting.sorting.efficient;
+using Sorting.sorting.specials;
 public class Program
 {
     public static void Main(string[] args)
     {
-        // https://github.com/accj1990/Sorting.git
-        // https://pt.overleaf.com/read/kptbxrwtrzch#8b9776
+        Console.WriteLine("Enemy Sorting System");
+        Console.WriteLine("--------------------");
+        
+        // Read enemies from file
+        ReaderFile reader = new ReaderFile("./inputs/enemys.txt");
+        string[] lines = reader.LerLinhaALinha();
+        Enemy[] enemies = new Enemy[lines.Length];
+        
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string[] parts = lines[i].Split(',');
+            enemies[i] = new Enemy(parts[0], int.Parse(parts[1]), 
+                                 int.Parse(parts[2]), int.Parse(parts[3]));
+        }
+        
+        // Display menu
+        Console.WriteLine("Choose sorting algorithm:");
+        Console.WriteLine("1. BubbleSort");
+        Console.WriteLine("2. SelectionSort");
+        Console.WriteLine("3. InsertionSort");
+        Console.WriteLine("4. ShellSort");
+        Console.WriteLine("5. QuickSort");
+        Console.WriteLine("6. MergeSort");
+        Console.WriteLine("7. HeapSort");
+        
+// Sorting/Program.cs
+int algorithmChoice;
+if (!int.TryParse(Console.ReadLine(), out algorithmChoice))
+{
+    Console.WriteLine("Entrada inválida!");
+    return;
+}
 
-        //int[] vet = ManagerFileReader.Arquivo10TXT();
-
-        //PrintSolutionStatic.ImprimirArrayMesmaLinha(vet, Sorting.enums.Sortings.BUBBLESORT);
-
-        //ManagerFileSorting.Ordenar(Sorting.enums.Sortings.BUBBLESORT, vet);
-
-        //PrintSolutionStatic.ImprimirArrayMesmaLinha(vet, Sorting.enums.Sortings.BUBBLESORT);
-
-
-        // Crie um menu que solicite ao usuário qual é o arquivo que será lido e qual algoritmo deverá ser executado
-
-
-
-        // Fila, Pilha e Lista em alocação estática
-        Fila f = new Fila(5);
-
-        f.Inserir(1);
-        f.Inserir(2);
-        f.Inserir(3);
-        f.Inserir(4);
-        f.Inserir(5);
-
-        f.Mostrar();
-
-        f.Inserir(6); // não consigo inserir pois a fila está cheia
-
-        f.Remover();
-
-        f.Mostrar();
-
-        f.Inserir(6);
-
-        f.Mostrar();
-
-        f.Remover();
-
-        f.Remover();
-
-        f.Remover();
-
-        f.Mostrar();
-
-        // Pilha
-        Pilha p = new Pilha(5);
-
-        p.Inserir(1);
-        p.Inserir(2);
-        p.Inserir(3);
-        p.Inserir(4);
-        p.Inserir(5);
-
-        p.Mostrar();
-        p.Inserir(6);
-
-        p.Remover();
-        p.Remover();
-
-        p.Mostrar();
-
+// Repita para outras entradas...        
+        Console.WriteLine("Choose sorting criteria:");
+        Console.WriteLine("1. Name");
+        Console.WriteLine("2. Health");
+        Console.WriteLine("3. Damage");
+        Console.WriteLine("4. Level");
+        
+        int criteriaChoice = int.Parse(Console.ReadLine());
+        string criteria = criteriaChoice switch {
+            1 => "name",
+            2 => "health",
+            3 => "damage",
+            4 => "level",
+            _ => "name"
+        };
+        
+        // Display before sorting
+        Console.WriteLine("\nBefore sorting:");
+        foreach (var enemy in enemies)
+        {
+            Console.WriteLine(enemy);
+        }
+        
+        // Sort
+// Sorting/Program.cs
+Enemy[] sortedEnemies = algorithmChoice switch {
+    1 => BubbleSort.Sorting(enemies, criteria),
+    2 => SelectionSort.Sorting(enemies, criteria),
+    3 => InsertionSort.Sorting(enemies, criteria),
+    4 => ShellSort.Sorting(enemies, criteria),
+    5 => QuickSort.Sorting(enemies, criteria),
+    6 => MergeSort.Sorting(enemies, criteria),
+    7 => HeapSort.Sorting(enemies, criteria),
+    _ => enemies
+};
+        
+        // Display after sorting
+        Console.WriteLine("\nAfter sorting:");
+        foreach (var enemy in sortedEnemies)
+        {
+            Console.WriteLine(enemy);
+        }
+        
+        // Save to file
+        string algorithmName = algorithmChoice switch {
+            1 => "bubble",
+            2 => "selection",
+            3 => "insertion",
+            4 => "shell",
+            5 => "quick",
+            6 => "merge",
+            7 => "heap",
+            _ => "unknown"
+        };
+        
+        string outputPath = $"./outputs/enemys-{algorithmName}.txt";
+        using (StreamWriter writer = new StreamWriter(outputPath))
+        {
+            foreach (var enemy in sortedEnemies)
+            {
+                writer.WriteLine($"{enemy.Name},{enemy.Health},{enemy.Damage},{enemy.Level}");
+            }
+        }
+        
+        Console.WriteLine($"Results saved to {outputPath}");
     }
 }
 </file>

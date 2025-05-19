@@ -1,23 +1,38 @@
-﻿namespace Sorting.sorting.simple
+﻿// Sorting/sorting/simple/InsertionSort.cs
+using Sorting.enemy;
+
+namespace Sorting.sorting.simple
 {
     class InsertionSort
     {
-        public static int[] Sorting(int[] vet)
+        public static Enemy[] Sorting(Enemy[] enemies, string sortBy)
         {
-            int j, x;
-            int n = vet.Length;
+            int n = enemies.Length;
             for (int i = 1; i < n; i++)
             {
-                x = vet[i];
-                j = i - 1;
-                while (j >= 0 && vet[j] > x)
+                Enemy key = enemies[i];
+                int j = i - 1;
+
+                while (j >= 0 && CompareEnemies(enemies[j], key, sortBy) > 0)
                 {
-                    vet[j + 1] = vet[j];
+                    enemies[j + 1] = enemies[j];
                     j--;
                 }
-                vet[j + 1] = x;
+                enemies[j + 1] = key;
             }
-            return vet;
+            return enemies;
         }
+
+private static int CompareEnemies(Enemy a, Enemy b, string sortBy)
+{
+    return sortBy.ToLower() switch
+    {
+        "name" => string.Compare(a.Name, b.Name),
+        "health" => a.Health.CompareTo(b.Health),
+        "damage" => a.Damage.CompareTo(b.Damage),
+        "level" => a.Level.CompareTo(b.Level),
+        _ => 0 // Garante um retorno padrão
+    };
+}
     }
 }

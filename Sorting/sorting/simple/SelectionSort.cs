@@ -1,28 +1,42 @@
-﻿namespace Sorting.sorting.simple
+﻿// Sorting/sorting/simple/SelectionSort.cs
+using Sorting.enemy;
+
+namespace Sorting.sorting.simple
 {
     class SelectionSort
     {
-        public static int[] Sorting(int[] vet)
+        public static Enemy[] Sorting(Enemy[] enemies, string sortBy)
         {
-            int n = vet.Length;
-            int min;
+            int n = enemies.Length;
+            
             for (int i = 0; i < n - 1; i++)
             {
-                min = i;
+                int minIndex = i;
                 for (int j = i + 1; j < n; j++)
                 {
-                    if (vet[j] < vet[min])
+                    if (CompareEnemies(enemies[j], enemies[minIndex], sortBy) < 0)
                     {
-                        min = j;
+                        minIndex = j;
                     }
                 }
-
-                int tmp = vet[i];
-                vet[i] = vet[min];
-                vet[min] = tmp;
+                
+                Enemy temp = enemies[minIndex];
+                enemies[minIndex] = enemies[i];
+                enemies[i] = temp;
             }
-
-            return vet;
+            return enemies;
         }
+
+private static int CompareEnemies(Enemy a, Enemy b, string sortBy)
+{
+    return sortBy.ToLower() switch
+    {
+        "name" => string.Compare(a.Name, b.Name),
+        "health" => a.Health.CompareTo(b.Health),
+        "damage" => a.Damage.CompareTo(b.Damage),
+        "level" => a.Level.CompareTo(b.Level),
+        _ => 0 // Garante um retorno padrão
+    };
+}
     }
 }

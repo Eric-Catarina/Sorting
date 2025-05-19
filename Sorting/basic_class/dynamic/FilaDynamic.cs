@@ -9,15 +9,15 @@
             this.primeiro = this.ultimo = new Celula();
         }
 
-        public bool Inserir(int item)
-        {
-            this.ultimo.valor = item;
-            this.ultimo.prox = new Celula();
-            this.ultimo = this.ultimo.prox;
-
-            return true;
-        }
-
+ public bool Inserir(int item)
+{
+    if (this.ultimo == null) return false;
+    
+    this.ultimo.valor = item;
+    this.ultimo.prox = new Celula();
+    this.ultimo = this.ultimo.prox;
+    return true;
+}
         public int Remover()
         {
             if (this.ultimo == this.primeiro)
