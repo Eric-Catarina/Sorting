@@ -1,0 +1,987 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: **/*.cs, **/*.csproj, **/*.sln
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+<additional_info>
+
+</additional_info>
+
+</file_summary>
+
+<directory_structure>
+Sorting/
+  basic_class/
+    dynamic/
+      Celula.cs
+      FilaDynamic.cs
+      ListaDuplamenteEncadeada.cs
+    static/
+      Fila.cs
+      Lista.cs
+      Pilha.cs
+  basic_dynamic_allocation_structures/
+    SolutionAllocationDynamic.cs
+  basic_static_allocation_structures/
+    SolutionAllocationStatic.cs
+  enums/
+    Sortings.cs
+  manager/
+    ManagerFileReader.cs
+    ManagerFileSorting.cs
+  print/
+    PrintSolutionDynamic.cs
+    PrintSolutionStatic.cs
+  reader/
+    ReaderFile.cs
+  sorting/
+    efficient/
+      HeapSort.cs
+      MergeSort.cs
+      QuickSort.cs
+      ShellSort.cs
+    simple/
+      BubbleSort.cs
+      InsertionSort.cs
+      SelectionSort.cs
+    specials/
+      BucketSort.cs
+      CountingSort.cs
+      RadixSort.cs
+  utils/
+    Conversor.cs
+    UtilClonar.cs
+    UtilCountingTime.cs
+    UtilEnum.cs
+  writer/
+    WriterFile.cs
+  Program.cs
+  Sorting.csproj
+Sorting.sln
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="Sorting/basic_class/dynamic/Celula.cs">
+namespace Sorting.basic_class.dynamic
+{
+    class Celula
+    {
+        public int valor;
+        public Celula? prox;
+
+        public Celula()
+        {
+            this.valor = -1;
+            this.prox = null;
+        }
+
+        public Celula(int valor)
+        {
+            this.valor = valor;
+            this.prox = null;
+        }
+    }
+}
+</file>
+
+<file path="Sorting/basic_class/dynamic/FilaDynamic.cs">
+namespace Sorting.basic_class.dynamic
+{
+    class FilaDynamic
+    {
+        public Celula? primeiro;
+        public Celula? ultimo;
+        public FilaDynamic()
+        {
+            this.primeiro = this.ultimo = new Celula();
+        }
+
+        public bool Inserir(int item)
+        {
+            this.ultimo.valor = item;
+            this.ultimo.prox = new Celula();
+            this.ultimo = this.ultimo.prox;
+
+            return true;
+        }
+
+        public int Remover()
+        {
+            if (this.ultimo == this.primeiro)
+            {
+                Console.WriteLine("Não é possível remover da fila.");
+            }
+
+            Celula? tmp = primeiro;
+            this.primeiro = primeiro.prox;
+
+            return -1;
+        }
+    }
+}
+</file>
+
+<file path="Sorting/basic_class/dynamic/ListaDuplamenteEncadeada.cs">
+namespace Sorting.basic_class.dynamic
+{
+    class ListaDuplamenteEncadeada
+    {
+    }
+}
+</file>
+
+<file path="Sorting/basic_class/static/Pilha.cs">
+namespace Sorting.basic_class.@static
+{
+    class Pilha
+    {
+        public int[] pilha;
+        public int topo; // guarda a posição do elemento do topo
+
+        public Pilha(int n)
+        {
+            pilha = new int[n];
+            topo = -1; // posição inválida
+        }
+
+        public bool Inserir(int item)
+        {
+            if (topo < pilha.Length - 1)
+            {
+                topo++;
+                pilha[topo] = item;
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Pilha cheia, não é possível inserir o " + item);
+                return false;
+            }
+        }
+
+        public int Remover()
+        {
+            if (topo != -1)
+            {
+                int tmp = pilha[topo];
+                pilha[topo] = -1;
+                topo--;
+                return tmp;
+            }
+            else
+            {
+                Console.WriteLine("Pilha vazia, por isso não é possível remover elemento.");
+                return -1;
+            }
+        }
+
+        public void Mostrar()
+        {
+            Console.WriteLine(" Pilha ");
+
+            for (int i = topo; i > -1; i--)
+            {
+                Console.WriteLine(pilha[i]);
+            }
+        }
+    }
+}
+</file>
+
+<file path="Sorting/utils/UtilClonar.cs">
+namespace Sorting.utils
+{
+    class UtilClonar
+    {
+        public static int[] Clonar(int[] vet)
+        {
+            int[] clone = new int[vet.Length];
+
+            for (int i = 0; i < vet.Length; i++)
+            {
+                clone[i] = vet[i];
+            }
+
+            return clone;
+        }
+    }
+}
+</file>
+
+<file path="Sorting/basic_class/static/Fila.cs">
+namespace Sorting.basic_class.@static
+{
+    class Fila
+    {
+        public int[] fila;
+        public int cont;
+        public Fila(int n)
+        {
+            fila = new int[n];
+            cont = 0;
+        }
+
+        public bool Inserir(int item)
+        {
+            if (cont < fila.Length)
+            {
+                fila[cont] = item;
+                cont++;
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("\nFila está cheia!!! Não é possível inserir o " + item);
+                return false;
+            }
+        }
+
+        public int Remover()
+        {
+            int tmp = fila[0];
+            for (int i = 0; i < cont - 1; i++)
+            {
+                fila[i] = fila[i + 1];
+            }
+
+            fila[cont - 1] = -1;
+            cont--;
+            return tmp;
+        }
+
+        public void Mostrar()
+        {
+            Console.WriteLine(" Fila ");
+
+            for (int i = 0; i < cont; i++)
+            {
+                Console.Write(fila[i] + " ");
+            }
+
+            Console.WriteLine(" ");
+
+        }
+    }
+}
+</file>
+
+<file path="Sorting/basic_class/static/Lista.cs">
+namespace Sorting.basic_class.@static
+{
+    class Lista
+    {
+        public int[] lista;
+        public int cont;
+
+        public Lista(int n)
+        {
+            lista = new int[n];
+            cont = 0;
+        }
+
+        public bool InserirFim(int item)
+        {
+            if (cont < lista.Length)
+            {
+                lista[cont] = item;
+                cont++;
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Lista está cheia, não é possível inserir " + item);
+                return false;
+            }
+        }
+
+        public bool InserirInicio(int item)
+        {
+            return true;// implemente
+        }
+
+        public bool InserirPosicao(int pos)
+        {
+            return true;// implemente
+        }
+
+        public int RemoverFim()
+        {
+            return -1; // implemente
+        }
+
+        public int RemoverInicio()
+        {
+            return -1; // implemente
+        }
+
+        public int RemoverPosicao(int pos)
+        {
+            return -1; // implemente
+        }
+
+    }
+}
+</file>
+
+<file path="Sorting/basic_dynamic_allocation_structures/SolutionAllocationDynamic.cs">
+namespace Sorting.basic_dynamic_allocation_structures
+{
+    class SolutionAllocationDynamic
+    {
+    }
+}
+</file>
+
+<file path="Sorting/enums/Sortings.cs">
+using System.ComponentModel;
+
+namespace Sorting.enums
+{
+    enum Sortings
+    {
+        [Description("BUBBLESORT")]
+        BUBBLESORT = 1,
+
+        [Description("SELECTION")]
+        SELECTIONSORT = 2,
+
+        [Description("INSERTION")]
+        INSERTIONSORT = 3,
+
+        [Description("BUCKETSORT")]
+        BUCKETSORT = 4,
+
+        [Description("COUNTINGSORT")]
+        COUNTINGSORT = 5,
+
+        [Description("RADIXSORT")]
+        RADIXSORT = 6,
+
+        [Description("SHELLSORT")]
+        SHELLSORT = 7,
+
+        [Description("QUICKSORT")]
+        QUICKSORT = 8,
+
+        [Description("MERGESORT")]
+        MERGESORT = 9,
+
+        [Description("HEAPSORT")]
+        HEAPSORT = 10,
+
+    }
+}
+</file>
+
+<file path="Sorting/print/PrintSolutionDynamic.cs">
+namespace Sorting.print
+{
+    class PrintSolutionDynamic
+    {
+    }
+}
+</file>
+
+<file path="Sorting/print/PrintSolutionStatic.cs">
+using Sorting.enums;
+using Sorting.utils;
+
+namespace Sorting.print
+{
+    static class PrintSolutionStatic
+    {
+        public static void ImprimirArrayMesmaLinha(int[] array, Sortings algoritmo)
+        {
+            Console.WriteLine("ALGORITMO - " + UtilEnum.GetDescription(algoritmo) + "\n");
+
+            Console.WriteLine("INICIO - Imprimindo estrutura em alocação estática sem pular linha.\n");
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write(array[i] + " ");
+            }
+            Console.Write("\n");
+            Console.WriteLine("\nFIM - Imprimindo estrutura em alocação estática sem pular linha.\n");
+        }
+
+        public static void ImprimirArrayQuebraLinha(int[] array)
+        {
+            Console.WriteLine("INICIO - Imprimindo estrutura em alocação estática com quebra de linha. \n");
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write(array[i] + " ");
+            }
+
+            Console.WriteLine("\nFIM - Imprimindo estrutura em alocação estática com quebra de linha.");
+        }
+    }
+}
+</file>
+
+<file path="Sorting/reader/ReaderFile.cs">
+namespace Sorting.reader
+{
+    class ReaderFile
+    {
+        public string pathFile;
+        public ReaderFile()
+        {
+            pathFile = "";
+        }
+        public ReaderFile(string pathFile)
+        {
+            this.pathFile = pathFile;
+        }
+
+        public string LerTodoArquivo()
+        {
+            return File.ReadAllText(this.pathFile); ;
+        }
+
+        public string[] LerLinhaALinha()
+        {
+            int n = GetNumLinhas();
+            string[] linhas = new string[n];
+            int i = 0;
+            foreach (var linha in File.ReadLines(this.pathFile))
+            {
+                linhas[i++] = linha;
+            }
+
+            return linhas;
+        }
+
+        public int GetNumLinhas()
+        {
+            return File.ReadLines(this.pathFile).Count();
+        }
+    }
+}
+</file>
+
+<file path="Sorting/sorting/efficient/HeapSort.cs">
+namespace Sorting.sorting.efficient
+{
+    class HeapSort
+    {
+    }
+}
+</file>
+
+<file path="Sorting/sorting/efficient/MergeSort.cs">
+namespace Sorting.sorting.efficient
+{
+    class MergeSort
+    {
+    }
+}
+</file>
+
+<file path="Sorting/sorting/efficient/QuickSort.cs">
+namespace Sorting.sorting.efficient
+{
+    class QuickSort
+    {
+    }
+}
+</file>
+
+<file path="Sorting/sorting/efficient/ShellSort.cs">
+namespace Sorting.sorting.efficient
+{
+    class ShellSort
+    {
+    }
+}
+</file>
+
+<file path="Sorting/sorting/simple/BubbleSort.cs">
+namespace Sorting.sorting.simple
+{
+    class BubbleSort
+    {
+        public static int[] Sorting(int[] vet)
+        {
+            int n = vet.Length;
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = n - 1; j > i; j--)
+                {
+                    if (vet[j] < vet[j - 1])
+                    {
+                        int tmp = vet[j];
+                        vet[j] = vet[j - 1];
+                        vet[j - 1] = tmp;
+                    }
+                }
+            }
+
+            return vet;
+        }
+    }
+}
+</file>
+
+<file path="Sorting/sorting/simple/InsertionSort.cs">
+namespace Sorting.sorting.simple
+{
+    class InsertionSort
+    {
+        public static int[] Sorting(int[] vet)
+        {
+            int j, x;
+            int n = vet.Length;
+            for (int i = 1; i < n; i++)
+            {
+                x = vet[i];
+                j = i - 1;
+                while (j >= 0 && vet[j] > x)
+                {
+                    vet[j + 1] = vet[j];
+                    j--;
+                }
+                vet[j + 1] = x;
+            }
+            return vet;
+        }
+    }
+}
+</file>
+
+<file path="Sorting/sorting/simple/SelectionSort.cs">
+namespace Sorting.sorting.simple
+{
+    class SelectionSort
+    {
+        public static int[] Sorting(int[] vet)
+        {
+            int n = vet.Length;
+            int min;
+            for (int i = 0; i < n - 1; i++)
+            {
+                min = i;
+                for (int j = i + 1; j < n; j++)
+                {
+                    if (vet[j] < vet[min])
+                    {
+                        min = j;
+                    }
+                }
+
+                int tmp = vet[i];
+                vet[i] = vet[min];
+                vet[min] = tmp;
+            }
+
+            return vet;
+        }
+    }
+}
+</file>
+
+<file path="Sorting/utils/Conversor.cs">
+namespace Sorting.utils
+{
+    class Conversor
+    {
+        public static int[] ConvertArrayStringsToInts(string[] array)
+        {
+            return array.Select(item => int.Parse(item)).ToArray();
+        }
+    }
+}
+</file>
+
+<file path="Sorting/utils/UtilCountingTime.cs">
+using System.Diagnostics;
+
+namespace Sorting.utils
+{
+    class UtilCountingTime
+    {
+        Stopwatch stopwatch = new Stopwatch();
+
+        public void Init()
+        {
+            stopwatch.Start();
+        }
+
+        public void Stop()
+        {
+            stopwatch.Stop();
+        }
+
+
+    }
+}
+</file>
+
+<file path="Sorting/utils/UtilEnum.cs">
+using System.ComponentModel;
+using System.Reflection;
+
+namespace Sorting.utils
+{
+    public static class UtilEnum
+    {
+        public static string GetDescription(Enum value)
+        {
+            var type = value.GetType();
+
+            var field = type.GetField(value.ToString());
+
+            var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
+
+            return attribute?.Description ?? value.ToString();
+
+        }
+
+    }
+}
+</file>
+
+<file path="Sorting.sln">
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sorting", "Sorting\Sorting.csproj", "{50EB27C3-DE6C-4994-8590-65DE8C16334E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50EB27C3-DE6C-4994-8590-65DE8C16334E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50EB27C3-DE6C-4994-8590-65DE8C16334E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50EB27C3-DE6C-4994-8590-65DE8C16334E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50EB27C3-DE6C-4994-8590-65DE8C16334E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F43E781A-AAD1-44F4-B731-B1AF1B87BE4C}
+	EndGlobalSection
+EndGlobal
+</file>
+
+<file path="Sorting/basic_static_allocation_structures/SolutionAllocationStatic.cs">
+using Sorting.enums;
+using Sorting.manager;
+using Sorting.print;
+namespace Sorting.basic_static_allocation_structures
+{
+    class SolutionAllocationStatic
+    {
+        public void LerVetor10(Sortings algoritmo)
+        {
+            int[] vet = ManagerFileReader.Arquivo10TXT();
+
+            PrintSolutionStatic.ImprimirArrayMesmaLinha(vet, algoritmo);
+
+        }
+    }
+}
+</file>
+
+<file path="Sorting/manager/ManagerFileReader.cs">
+using Sorting.reader;
+using Sorting.utils;
+
+namespace Sorting.manager
+{
+    class ManagerFileReader
+    {
+        static ReaderFile reader = new ReaderFile();
+        public static int[] Arquivo10TXT()
+        {
+            ReaderFile reader = new ReaderFile("./inputs/10-aleatorios.txt");
+
+            return Conversor.ConvertArrayStringsToInts(reader.LerLinhaALinha());
+
+        }
+
+        public static int[] Arquivo100TXT()
+        {
+            ReaderFile reader = new ReaderFile("./inputs/100-aleatorios.txt");
+
+            return Conversor.ConvertArrayStringsToInts(reader.LerLinhaALinha());
+
+        }
+
+        public static int[] Arquivo1000TXT()
+        {
+            ReaderFile reader = new ReaderFile("./inputs/1000-aleatorios.txt");
+
+            return Conversor.ConvertArrayStringsToInts(reader.LerLinhaALinha());
+
+        }
+
+        public static int[] Arquivo10000TXT()
+        {
+            ReaderFile reader = new ReaderFile("./inputs/10000-aleatorios.txt");
+
+            return Conversor.ConvertArrayStringsToInts(reader.LerLinhaALinha());
+
+        }
+
+        public static int[] Arquivo100000TXT()
+        {
+            ReaderFile reader = new ReaderFile("./inputs/100000-aleatorios.txt");
+
+            return Conversor.ConvertArrayStringsToInts(reader.LerLinhaALinha());
+
+        }
+
+        public static int[] Arquivo1000000TXT()
+        {
+            ReaderFile reader = new ReaderFile("./inputs/1000000-aleatorios.txt");
+
+            return Conversor.ConvertArrayStringsToInts(reader.LerLinhaALinha());
+
+        }
+    }
+}
+</file>
+
+<file path="Sorting/sorting/specials/BucketSort.cs">
+namespace Sorting.sorting.specials
+{
+    class BucketSort
+    {
+    }
+}
+</file>
+
+<file path="Sorting/sorting/specials/CountingSort.cs">
+namespace Sorting.sorting.specials
+{
+    class CountingSort
+    {
+    }
+}
+</file>
+
+<file path="Sorting/sorting/specials/RadixSort.cs">
+namespace Sorting.sorting.specials
+{
+    class RadixSort
+    {
+    }
+}
+</file>
+
+<file path="Sorting/writer/WriterFile.cs">
+namespace Sorting.writer
+{
+    class WriterFile
+    {
+
+    }
+}
+</file>
+
+<file path="Sorting/Sorting.csproj">
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="inputs\10-aleatorios.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="inputs\100-aleatorios.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="inputs\1000-aleatorios.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="inputs\10000-aleatorios.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="inputs\100000-aleatorios.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="inputs\1000000-aleatorios.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="output\" />
+  </ItemGroup>
+
+</Project>
+</file>
+
+<file path="Sorting/manager/ManagerFileSorting.cs">
+using Sorting.enums;
+using Sorting.sorting.simple;
+
+namespace Sorting.manager
+{
+    class ManagerFileSorting
+    {
+        public static void Ordenar(Sortings algoritmo, int[] vet)
+        {
+            int[] ordenado;
+
+            switch (algoritmo)
+            {
+                case Sortings.BUBBLESORT:
+                    ordenado = BubbleSort.Sorting(vet);
+                    break;
+
+                case Sortings.SELECTIONSORT:
+                    ordenado = SelectionSort.Sorting(vet);
+                    break;
+
+                case Sortings.INSERTIONSORT:
+                    ordenado = InsertionSort.Sorting(vet);
+                    break;
+
+                case Sortings.BUCKETSORT:
+                    break;
+
+                case Sortings.COUNTINGSORT:
+                    break;
+
+                case Sortings.RADIXSORT:
+                    break;
+
+                case Sortings.SHELLSORT:
+                    break;
+
+                case Sortings.QUICKSORT:
+                    break;
+
+                case Sortings.MERGESORT:
+                    break;
+
+                case Sortings.HEAPSORT:
+                    break;
+            }
+        }
+    }
+}
+</file>
+
+<file path="Sorting/Program.cs">
+using Sorting.basic_class.@static;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        // https://github.com/accj1990/Sorting.git
+        // https://pt.overleaf.com/read/kptbxrwtrzch#8b9776
+
+        //int[] vet = ManagerFileReader.Arquivo10TXT();
+
+        //PrintSolutionStatic.ImprimirArrayMesmaLinha(vet, Sorting.enums.Sortings.BUBBLESORT);
+
+        //ManagerFileSorting.Ordenar(Sorting.enums.Sortings.BUBBLESORT, vet);
+
+        //PrintSolutionStatic.ImprimirArrayMesmaLinha(vet, Sorting.enums.Sortings.BUBBLESORT);
+
+
+        // Crie um menu que solicite ao usuário qual é o arquivo que será lido e qual algoritmo deverá ser executado
+
+
+
+        // Fila, Pilha e Lista em alocação estática
+        Fila f = new Fila(5);
+
+        f.Inserir(1);
+        f.Inserir(2);
+        f.Inserir(3);
+        f.Inserir(4);
+        f.Inserir(5);
+
+        f.Mostrar();
+
+        f.Inserir(6); // não consigo inserir pois a fila está cheia
+
+        f.Remover();
+
+        f.Mostrar();
+
+        f.Inserir(6);
+
+        f.Mostrar();
+
+        f.Remover();
+
+        f.Remover();
+
+        f.Remover();
+
+        f.Mostrar();
+
+        // Pilha
+        Pilha p = new Pilha(5);
+
+        p.Inserir(1);
+        p.Inserir(2);
+        p.Inserir(3);
+        p.Inserir(4);
+        p.Inserir(5);
+
+        p.Mostrar();
+        p.Inserir(6);
+
+        p.Remover();
+        p.Remover();
+
+        p.Mostrar();
+
+    }
+}
+</file>
+
+</files>

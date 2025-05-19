@@ -1,0 +1,17 @@
+# Arquivo repomix para compactar arquivos C#
+
+include:
+  - "**/*.cs"
+  - "**/*.csproj"
+  - "**/*.sln"
+
+
+exclude:
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/node_modules/**"
+  - "**/.git/**"
+  - "**/.vs/**"
+  - "**/packages/**"
+  - "**/inputs/**"  # Adicionado para ignorar essa pasta específica
+output: projeto_csharp_backup_{date}_{time}.zip

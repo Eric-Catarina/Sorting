@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "format": "zip",
+  "include": [
+    "**/*.cs",
+    "**/*.csproj",
+    "**/*.sln"
+  ],
+  "exclude": [
+    "**/bin/**",
+    "**/obj/**",
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/.vs/**",
+    "**/packages/**",
+    "**/Sorting/inputs/**"
+  ],
+  "output": {
+    "name": "projeto_csharp_backup_{timestamp}",
+    "timestampFormat": "YYYYMMDD_HHmmss"
+  }
+}
