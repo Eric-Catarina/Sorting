@@ -85,8 +85,8 @@ Enemy[] sortedEnemies = algorithmChoice switch {
     3 => InsertionSort.Sorting(enemies, criteria),
     4 => ShellSort.Sorting(enemies, criteria),
     5 => QuickSort.Sorting(enemies, criteria),
-    // 6 => MergeSort.Sorting(enemies, criteria),
-    // 7 => HeapSort.Sorting(enemies, criteria),
+    6 => MergeSort.Sorting(enemies, criteria),
+    7 => HeapSort.Sorting(enemies, criteria),
     _ => enemies
 };
         

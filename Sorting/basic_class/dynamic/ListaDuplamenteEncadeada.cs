@@ -42,14 +42,16 @@ public int Remover()
 
     return tmp.valor;
 }
-        public bool Pesquisar(int item)
-        {
-            for (Celula i = primeiro.prox; i != null; i = i.prox)
-            {
-                if (i.valor == item)
-                    return true;
-            }
-            return false;
-        }
+       // Na classe ListaDuplamenteEncadeada
+public bool Pesquisar(int valor)
+{
+    Celula atual = primeiro.prox;
+    while (atual != null)
+    {
+        if (atual.valor == valor) return true;
+        atual = atual.prox;
+    }
+    return false;
+}
     }
 }
