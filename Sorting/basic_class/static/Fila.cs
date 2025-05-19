@@ -51,11 +51,12 @@
 
         }
         // Na classe Fila (estática)
-public int Pesquisar(int valor)
-{
-    for (int i = 0; i < cont; i++)
-        if (fila[i] == valor) return i;
-    return -1;
-}
+        public int Pesquisar(int valor)
+        {
+            for (int i = 0; i < cont; i++)
+                if (fila[i] == valor)
+                    return i;
+            return -1;
+        }
     }
 }

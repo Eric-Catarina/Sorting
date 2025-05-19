@@ -5,61 +5,39 @@ namespace Sorting.sorting.efficient
     {
         public static Enemy[] Sorting(Enemy[] enemies, string sortBy)
         {
-            if (enemies.Length <= 1)
-                return enemies;
+            int n = enemies.Length;
 
-            // Divide o array em duas partes
-            int mid = enemies.Length / 2;
-            Enemy[] left = new Enemy[mid];
-            Enemy[] right = new Enemy[enemies.Length - mid];
+            // Build heap
+            for (int i = n / 2 - 1; i >= 0; i--)
+                Heapify(enemies, n, i, sortBy);
 
-            Array.Copy(enemies, 0, left, 0, mid);
-            Array.Copy(enemies, mid, right, 0, enemies.Length - mid);
+            // Extract elements
+            for (int i = n - 1; i > 0; i--)
+            {
+                (enemies[0], enemies[i]) = (enemies[i], enemies[0]);
+                Heapify(enemies, i, 0, sortBy);
+            }
 
-            // Recursivamente ordena as duas metades
-            left = Sorting(left, sortBy);
-            right = Sorting(right, sortBy);
-
-            // Combina as metades ordenadas
-            return Merge(left, right, sortBy);
+            return enemies;
         }
 
-        private static Enemy[] Merge(Enemy[] left, Enemy[] right, string sortBy)
+        private static void Heapify(Enemy[] arr, int n, int i, string sortBy)
         {
-            Enemy[] result = new Enemy[left.Length + right.Length];
-            int leftIndex = 0, rightIndex = 0, resultIndex = 0;
+            int largest = i;
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
 
-            while (leftIndex < left.Length && rightIndex < right.Length)
+            if (left < n && CompareEnemies(arr[left], arr[largest], sortBy) > 0)
+                largest = left;
+
+            if (right < n && CompareEnemies(arr[right], arr[largest], sortBy) > 0)
+                largest = right;
+
+            if (largest != i)
             {
-                if (CompareEnemies(left[leftIndex], right[rightIndex], sortBy) <= 0)
-                {
-                    result[resultIndex] = left[leftIndex];
-                    leftIndex++;
-                }
-                else
-                {
-                    result[resultIndex] = right[rightIndex];
-                    rightIndex++;
-                }
-                resultIndex++;
+                (arr[i], arr[largest]) = (arr[largest], arr[i]);
+                Heapify(arr, n, largest, sortBy);
             }
-
-            // Copia os elementos restantes (se houver)
-            while (leftIndex < left.Length)
-            {
-                result[resultIndex] = left[leftIndex];
-                leftIndex++;
-                resultIndex++;
-            }
-
-            while (rightIndex < right.Length)
-            {
-                result[resultIndex] = right[rightIndex];
-                rightIndex++;
-                resultIndex++;
-            }
-
-            return result;
         }
 
         private static int CompareEnemies(Enemy a, Enemy b, string sortBy)
@@ -77,3 +55,5 @@ namespace Sorting.sorting.efficient
         }
     }
 }
+
+

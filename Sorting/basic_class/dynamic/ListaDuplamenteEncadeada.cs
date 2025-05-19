@@ -45,10 +45,11 @@ public int Remover()
        // Na classe ListaDuplamenteEncadeada
 public bool Pesquisar(int valor)
 {
-    Celula atual = primeiro.prox;
-    while (atual != null)
+    Celula atual = primeiro?.prox;
+    while (atual != null && atual != ultimo)
     {
-        if (atual.valor == valor) return true;
+        if (atual.valor == valor)
+            return true;
         atual = atual.prox;
     }
     return false;

@@ -1,36 +1,38 @@
+// Sorting/search/BinarySearch.cs
 using Sorting.enemy;
+using Sorting.structures;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Sorting.search
 {
-    class BinarySearch
+    public class BinarySearch
     {
-        public static bool Search(Enemy[] enemies, string property, string value)
+        public static bool Search(ListaDinamica lista, string nome)
         {
-            int left = 0;
-            int right = enemies.Length - 1;
+            List<Enemy> sortedList = new List<Enemy>();
+            var atual = lista.Primeiro.Prox;
+            
+            while (atual != null)
+            {
+                sortedList.Add(atual.Dado);
+                atual = atual.Prox;
+            }
 
+            sortedList = sortedList.OrderBy(e => e.Name).ToList();
+            
+            int left = 0;
+            int right = sortedList.Count - 1;
+            
             while (left <= right)
             {
                 int mid = left + (right - left) / 2;
-
-                string midValue = property.ToLower() switch
-                {
-                    "name" => enemies[mid].Name,
-                    "health" => enemies[mid].Health.ToString(),
-                    "damage" => enemies[mid].Damage.ToString(),
-                    "level" => enemies[mid].Level.ToString(),
-                    _ => ""
-                };
-
-                int comparison = string.Compare(midValue, value);
-
-                if (comparison == 0)
-                    return true;
-                else if (comparison < 0)
-                    left = mid + 1;
-                else
-                    right = mid - 1;
+                int comparison = string.Compare(sortedList[mid].Name, nome, StringComparison.OrdinalIgnoreCase);
+                
+                if (comparison == 0) return true;
+                if (comparison < 0) left = mid + 1;
+                else right = mid - 1;
             }
-
             return false;
         }
     }

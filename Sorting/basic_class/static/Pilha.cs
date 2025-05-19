@@ -51,5 +51,16 @@
                 Console.WriteLine(pilha[i]);
             }
         }
+
+        // Método de pesquisa para Pilha
+        public int Pesquisar(int valor)
+        {
+            for (int i = 0; i <= topo; i++)  // Corrigido: usando topo em vez de cont
+            {
+                if (pilha[i] == valor)      // Corrigido: usando pilha em vez de fila
+                    return i;
+            }
+            return -1;
+        }
     }
 }
